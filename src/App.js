@@ -1,18 +1,19 @@
-import { PerlinNoise } from "./PerlinNoise";
-import { Gradient } from "./GetRadicalGradientMask";
-import { Vector2 } from "babylonjs";
-const inverseLerp = (min, max, value) => {
-  return (value - min) / (max - min);
-};
+import { PerlinNoise } from './components/PerlinNoise';
+import { Gradient } from './components/GetRadicalGradientMask';
 
-function App() {
+const App = () => {
   const width = 500;
   const height = 500;
 
   PerlinNoise(width, height);
   Gradient(width, height);
 
-  return <></>;
-}
+  return (
+    <>
+      <PerlinNoise width={width} height={height} />
+      <Gradient width={width} height={height} />
+    </>
+  );
+};
 
 export default App;
