@@ -1,12 +1,9 @@
 import { PerlinNoise } from './components/PerlinNoise';
-import { Gradient } from './components/GetRadicalGradientMask';
+import { Gradient } from './components/Gradient';
 
 const App = () => {
   const width = 500;
   const height = 500;
-
-  PerlinNoise(width, height);
-  Gradient(width, height);
 
   return (
     <>
