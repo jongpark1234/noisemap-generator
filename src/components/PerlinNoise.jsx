@@ -1,20 +1,24 @@
 import { useRef, useState, useEffect } from 'react';
-import { makeNoise2D } from 'fast-simplex-noise';
-import random from 'seedrandom';
+import FastNoise from 'fastnoise-lite';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
-import { Canvas } from './style';
-
-export const getNoisePixel = (x, y, noiseMaker, resolution, amplitude) => {
-  return (1 + noiseMaker(x / resolution, y / resolution)) * (amplitude / 2);
-};
+import * as style from './style';
 
 export const PerlinNoise = ({ width, height }) => {
-  const [resolution] = useState(150);
-  const [amplitude] = useState(255);
-  const [seed] = useState(Math.random());
+  const [frequency, setFrequency] = useState(0.0125);
+  const [octave, setOctave] = useState(3);
+  const [seed, setSeed] = useState(Math.random());
+  const [landNoiseThreshold, setLandNoiseThreshold] = useState(0.3);
 
-  const noiseMaker = makeNoise2D(random(String(seed)));
   const canvasRef = useRef(null);
+
+  const noise = new FastNoise();
+  noise.SetNoiseType(FastNoise.NoiseType.Perlin);
+  noise.SetFractalType(FastNoise.FractalType.FBm);
+  noise.SetFrequency(frequency);
+  noise.SetFractalOctaves(octave);
+  noise.SetSeed(seed);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -23,13 +27,35 @@ export const PerlinNoise = ({ width, height }) => {
       context.canvas.height = height;
       for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
-          const noise = getNoisePixel(x, y, noiseMaker, resolution, amplitude);
-          context.fillStyle = `rgba(${noise}, ${noise}, ${noise})`;
+          const noiseColorFactor = (noise.GetNoise(x, y) + 1) * 0.5 * 255;
+          context.fillStyle = `rgba(${noiseColorFactor}, ${noiseColorFactor}, ${noiseColorFactor})`;
           context.fillRect(x, y, 1, 1);
         }
       }
     }
   });
 
-  return <Canvas ref={canvasRef} />;
+  return (
+    <style.container>
+      <style.noiseMapCanvas ref={canvasRef} />
+      <style.optionContainer>
+        <style.sliderContainer>
+          <span>Frequency</span>
+          <Slider
+            min={0}
+            max={1}
+            step={0.001}
+            defaultValue={frequency}
+            onChange={(e) => setFrequency(e)}
+          />
+          <span>{frequency}</span>
+        </style.sliderContainer>
+        <style.sliderContainer>
+          <span>Octave</span>
+          <Slider min={0} max={16} defaultValue={octave} onChange={(e) => setOctave(e)} />
+          <span>{octave}</span>
+        </style.sliderContainer>
+      </style.optionContainer>
+    </style.container>
+  );
 };
