@@ -1,8 +1,20 @@
+import 'rc-slider/assets/index.css';
 import * as style from './style';
-import { getNoiseMap } from './PerlinNoise';
-import { getGradientMap } from './Gradient';
 
-export const Options = () => {
+export const Options = ({
+  frequency,
+  setFrequency,
+  octave,
+  setOctave,
+  seed,
+  setSeed,
+  landToggle,
+  setLandToggle,
+  landNoiseThreshold,
+  setLandNoiseThreshold,
+  maskRadius,
+  setMaskRadius,
+}) => {
   return (
     <style.optionContainer>
       <style.sliderContainer>
@@ -49,6 +61,16 @@ export const Options = () => {
         <style.button onClick={() => setLandToggle((prev) => !prev)}>
           {landToggle ? 'Now Applying' : 'Click for Apply'}
         </style.button>
+      </style.sliderContainer>
+      <style.sliderContainer>
+        <span>Mask Radius</span>
+        <style.slider
+          min={0}
+          max={1}
+          step={0.1}
+          defaultValue={maskRadius}
+          onChange={(e) => setMaskRadius(e)}
+        />
       </style.sliderContainer>
     </style.optionContainer>
   );

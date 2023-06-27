@@ -1,5 +1,4 @@
 import { useRef, useEffect } from 'react';
-import 'rc-slider/assets/index.css';
 
 import * as style from './style';
 

@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { PerlinNoise } from './components/PerlinNoise';
 import { Gradient } from './components/Gradient';
+import { GradientNoise } from './components/GradientNoise';
+import { Options } from './components/Options';
 import FastNoise from 'fastnoise-lite';
+
+import * as style from './components/style';
 
 export const getNoiseMap = (fastNoise, width, height, frequency, octave, seed) => {
   const noiseMap = [];
@@ -49,7 +53,7 @@ const App = () => {
   const [frequency, setFrequency] = useState(0.01);
   const [octave, setOctave] = useState(3);
   const [seed, setSeed] = useState(Math.floor(Math.random() * 100_000_000));
-  const [landNoiseThreshold, setLandNoiseThreshold] = useState(0.2);
+  const [landNoiseThreshold, setLandNoiseThreshold] = useState(0.5);
   const [landToggle, setLandToggle] = useState(false);
   const [maskRadius, setMaskRadius] = useState(0.5);
 
@@ -64,7 +68,7 @@ const App = () => {
   const gradientMap = getGradientMap(width, height, width * maskRadius);
 
   return (
-    <>
+    <style.container>
       <PerlinNoise
         noiseMap={noiseMap}
         width={width}
@@ -72,8 +76,30 @@ const App = () => {
         landToggle={landToggle}
         landNoiseThreshold={landNoiseThreshold}
       />
+      <Options
+        frequency={frequency}
+        setFrequency={setFrequency}
+        octave={octave}
+        setOctave={setOctave}
+        seed={seed}
+        setSeed={setSeed}
+        landToggle={landToggle}
+        setLandToggle={setLandToggle}
+        landNoiseThreshold={landNoiseThreshold}
+        setLandNoiseThreshold={setLandNoiseThreshold}
+        maskRadius={maskRadius}
+        setMaskRadius={setMaskRadius}
+      />
       <Gradient gradientMap={gradientMap} width={width} height={height} />
-    </>
+      <GradientNoise
+        noiseMap={noiseMap}
+        gradientMap={gradientMap}
+        width={width}
+        height={height}
+        landToggle={landToggle}
+        landNoiseThreshold={landNoiseThreshold}
+      />
+    </style.container>
   );
 };
 

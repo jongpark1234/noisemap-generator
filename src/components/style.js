@@ -2,21 +2,23 @@ import { styled } from 'styled-components';
 import Slider from 'rc-slider';
 
 export const container = styled.div`
-  width: 100%;
+  width: 1000px;
   display: flex;
+  flex-wrap: wrap;
 `;
 
 export const optionContainer = styled.div`
-  width: 100%;
+  width: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  row-gap: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
 `;
 
 export const sliderContainer = styled.div`
-  width: 70%;
+  min-width: 100px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
